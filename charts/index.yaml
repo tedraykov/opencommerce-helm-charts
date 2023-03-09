@@ -1,0 +1,13 @@
+apiVersion: v1
+entries:
+  reaction-core:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2023-03-09T19:57:30.376736+02:00"
+    description: A Helm chart for Reaction Core
+    digest: 4f9d798852ef38612f8fd563de284b8fbe517381451cf82fb786500822c806de
+    name: reaction-core
+    urls:
+    - reaction-core-0.1.0.tgz
+    version: 0.1.0
+generated: "2023-03-09T19:57:30.375348+02:00"

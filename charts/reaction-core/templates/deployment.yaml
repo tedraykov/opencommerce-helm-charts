@@ -1,0 +1,103 @@
+{{- $fullName := include "reaction-core.fullname" . -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $fullName }}
+  labels:
+    app.kubernetes.io/name: {{ include "reaction-core.name" . }}
+    app.kubernetes.io/component: core
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    helm.sh/chart: {{ include "reaction-core.chart" . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "reaction-core.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ values .Values.config | sortAlpha | toString | sha256sum }}
+{{- if .Values.annotations }}
+        {{- with .Values.annotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+{{- end }}
+      labels:
+        app.kubernetes.io/name: {{ include "reaction-core.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+{{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+{{ toYaml .Values.imagePullSecrets | indent 8 }}
+{{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+{{- if .Values.config.profilingEnabled }}
+          {{- if .Values.command }}
+          command: {{ .Values.command }}
+          {{- else}}
+          command:
+            - node
+            - --prof
+            - main.js
+          {{- end }}
+{{- end }}
+{{- if .Values.config.datadogEnabled }}
+          env:
+            - name: DD_AGENT_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: DD_SERVICE_NAME
+              value: {{ $fullName | quote }}
+{{- end }}
+          envFrom:
+            - configMapRef:
+                name: {{ $fullName }}
+            - secretRef:
+                name: {{ $fullName }}
+            - configMapRef:
+                name: {{ .Values.kafkaConfigMap }}
+            - secretRef:
+                name: {{ .Values.mongodbSecret }}
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+{{- if .Values.config.metricsEnabled }}
+            - name: admin
+              containerPort: 3001
+              protocol: TCP
+{{- end }}
+{{- if .Values.config.healthchecksEnabled }}
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            timeoutSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 15
+            successThreshold: 2
+            timeoutSeconds: 15
+{{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}

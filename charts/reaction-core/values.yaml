@@ -1,0 +1,151 @@
+# Default values for reaction-core.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image: {}
+#  repository: XXX
+#  tag: latest
+#  pullPolicy: IfNotPresent
+imagePullSecrets: []
+
+nameOverride: ""
+fullnameOverride: ""
+
+annotations: {}
+
+service:
+  type: ClusterIP
+  port: 80
+  adminPort: 3001
+  serviceMonitorLabel: application
+
+ingress:
+  enabled: false
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+    #
+# hosts:
+#   - host: www.example.com
+#     paths: ['/']
+
+config:
+  allowResetCodesMutation: false
+  #brontoMessageName: "DEFINED_IN_BRONTO"
+  #brontoFromName: "John Smith"
+  #brontoNewsletterListId: 1abc23de00000000000000000000000fg456
+  #brontoReplyToEmail: "email@address.com"
+  cartReferenceIdPrefix: 44
+  constantPublisherMode: false
+  constantPublisherPauseSeconds: 300
+  datadogEnabled: true
+  defaultShippingMethodId: SPbMh5gdz24Wr4J94
+  defaultShippingMethodRate: "2.99"
+  graphqlIntrospectionEnabled: false
+  graphqlPlaygroundEnabled: false
+  healthchecksEnabled: true
+  hydraOauth2IntrospectUrl: http://ory-hydra-admin:4445/oauth2/introspect
+  kafkaPartitionsLoyalty: 3
+  initialImport: false
+  inventoryPluginBatchConsumeSize: 1000
+  jaegerEndpoint: http://jaeger-collector.tracing.svc.cluster.local:14268/api/traces
+  jaegerSamplerParam: 0
+  jaegerSamplerType: const
+  shippableInventoryConsumerEnabled: false
+  kadiraEnabled: false
+  kafkaPartitionsEtlShippableInventoryStatus: 1
+  kafkaTopicCatalogSyncProducts: etl.catalog-sync.products.json-gen1
+  kafkaTopicEtlShippableInventoryStatus: etl.shippable-inventory.inventory-status.json-gen1
+  kafkaTopicEtlShippableInventoryStream: etl.shippable-inventory.inventory-data.json-gen1
+  kafkaTopicImportOrderStatusOrders: etl.import-order-status.status.json-gen1
+  kafkaTopicImportTaxCodesTaxcodes: etl.import-tax-codes.tax-codes.json-gen1
+  kafkaTopicLoyaltyPluginDbUpdates: etl.loyalty-db-updates.json-gen1
+  kafkaTopicLoyaltyPluginDbUpdatesStatus: etl.loyalty-db-updates-status.json-gen1
+  kafkaTopicPricebooks: reaction.pricing.pricebook-aggregates.avro-gen1
+  kafkaTopicPricesById: reaction.pricing.prices-by-id-aggregates.avro-gen1
+  kafkaTopicProductImportErrors: etl.product-import.errors.json-gen1
+  kafkaTopicProductImportProducts: etl.product-import.products.status.json-gen1
+  kafkaTopicRadialItemExportStatus: etl.radial-item-export.status.json-gen1
+  kafkaTopicProductImportErrorsPartitions: 3
+  kafkaTopicProductImportProductsPartitions: 3
+  kafkaTopicSurcharges: etl.surcharges.surcharges.json-gen1
+  kafkaSchemaRegistryUrl: http://kafka-schema-registry:8081
+  listrakEnabled: false
+  logFormat: json
+  logLevel: INFO
+  loyaltyConsumerEnabled: false
+  loyaltyPluginBatchConsumeSize: 1000
+  metricsEnabled: true
+  metricsHost: 0.0.0.0
+  metricsPath: /metrics
+  metricsPort: 3001
+  mockTlsTermination: true
+  nodeEnv: production
+  orderExportRadialUrl: https://api-na.gsipartners.com/v1.0/OOMF/stores
+  pricingConsumerEnabled: false
+  pricingGraphqlUrl: http://reaction-pricing-engine/graphql
+  productConsumerEnabled: false
+  productImportDefaultInvisible: true
+  productPublisherAutoPublish: false
+  profilingEnabled: false
+  #radialApiKey: XXX
+  #radialApiUrl: XXX
+  radialItemExportConsumerEnabled: false
+  #radialRomStoreId: XXX
+  #radialRomOrderCreateApiKey: XXX
+  #radialRomOrderPrefix: XXX
+  #radialRomCustomerIdPrefix: XXX
+  #reactionAdminPublicAccountRegistrationUrl: XXX
+  #reactionIdentityPublicPasswordResetUrl: XXX
+  #reactionIdentityPublicVerifyEmailUrl: XXX
+  importOrderStatusConsumerEnabled: false
+  seoMetadataConsumerEnabled: false
+  storeInventoryConsumerEnabled: false
+  surchargeConsumerEnabled: false
+  segmentAnalytics:
+    enabled: false
+    #writeKey: XXX
+  sentry:
+    enabled: false
+    # dsn: XXX
+    # environment: XXX
+  skipFixtures: 1
+  startingNewCustomerNumber: "1100151420184"
+  taxesConsumerEnabled: false
+  user: "Reaction Admin"
+
+resources:
+  limits:
+    cpu: 2
+    memory: 4Gi
+  requests:
+    cpu: 300m
+    memory: 512Mi
+
+#maxUnavailable: 1
+
+kafkaConfigMap: kafka
+mongodbSecret: mongodb
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+core: {}
+#  name: example
+#  baseUrl: https://www.example.com/
+#  elasticsearchUrl: http://elasticsearch:9200
+#  imageUrl: https://www.example.com/
+#  defaultShippingMethodRate: 2.99
+#  printErrors: false
+#  sessionMaxAge: 2592000000
+
+horizontalPodAutoscaler:
+  enabled: false
+  averageUtilization: 60
+  #  min: 1
+  #  max: 3

@@ -1,0 +1,105 @@
+{{- $fullName := include "reaction-core.fullname" . -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $fullName }}
+  labels:
+    app.kubernetes.io/name: {{ include "reaction-core.name" . }}
+    app.kubernetes.io/component: core
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    helm.sh/chart: {{ include "reaction-core.chart" . }}
+data:
+  BRONTO_MESSAGE_NAME: {{ required "config.brontoMessageName not defined." .Values.config.brontoMessageName | quote }}
+  BRONTO_REPLY_TO_EMAIL: {{ required "config.brontoReplyToEmail not defined." .Values.config.brontoReplyToEmail | quote }}
+  BRONTO_FROM_NAME: {{ required "config.brontoFromName not defined." .Values.config.brontoFromName | quote }}
+  BRONTO_NEWSLETTER_LIST_ID: {{ required "config.brontoNewsletterListId not defined." .Values.config.brontoNewsletterListId | quote }}
+  SITE_CODE: {{ required "config.siteCode not defined." .Values.config.siteCode | quote }}
+  INITIAL_IMPORT: {{ required "config.initialImport not defined." .Values.config.initialImport | quote }}
+  STARTING_NEW_CUSTOMER_NUMBER: {{ required "config.startingNewCustomerNumber not defined." .Values.config.startingNewCustomerNumber | quote }}
+  SKIP_FIXTURES: {{ required "config.skipFixtures not defined." .Values.config.skipFixtures | quote }}
+  ROOT_URL: {{ required "config.rootUrl not defined." .Values.config.rootUrl | quote }}
+  CART_REFERENCE_ID_PREFIX: {{ required "config.cartReferenceIdPrefix not defined." .Values.config.cartReferenceIdPrefix | quote }}
+  CLOUDINARY_CLOUD_NAME: {{ required "config.cloudinaryCloudName not defined." .Values.config.cloudinaryCloudName | quote }}
+  ETCD_URL: {{ required "config.etcdUrl not defined." .Values.config.etcdUrl | quote }}
+  JAEGER_ENDPOINT: {{ required "config.jaegerEndpoint not defined." .Values.config.jaegerEndpoint | quote }}
+  JAEGER_SAMPLER_PARAM: {{ .Values.config.jaegerSamplerParam | quote }}
+  JAEGER_SAMPLER_TYPE: {{ .Values.config.jaegerSamplerType | quote }}
+  DEFAULT_SHIPPING_METHOD_ID: {{ required "config.defaultShippingMethodId not defined." .Values.config.defaultShippingMethodId | quote }}
+  DEFAULT_SHIPPING_METHOD_RATE: {{ required "config.defaultShippingMethodRate not defined." .Values.config.defaultShippingMethodRate | quote }}
+  REACTION_LOG_FORMAT: {{ required "config.logFormat not defined." .Values.config.logFormat | quote }}
+  REACTION_LOG_LEVEL: {{ required "config.logLevel not defined." .Values.config.logLevel | upper | quote }}
+  GRAPHQL_INTROSPECTION_ENABLED: {{ required "config.graphqlIntrospectionEnabled not defined." .Values.config.graphqlIntrospectionEnabled | quote }}
+  GRAPHQL_PLAYGROUND_ENABLED: {{ required "config.graphqlPlaygroundEnabled not defined." .Values.config.graphqlPlaygroundEnabled | quote }}
+  HYDRA_OAUTH2_INTROSPECT_URL: {{ required "config.hydraOauth2IntrospectUrl not defined." .Values.config.hydraOauth2IntrospectUrl | quote }}
+  SCHEMA_REGISTRY_URL: {{ required "config.kafkaSchemaRegistryUrl not defined." .Values.config.kafkaSchemaRegistryUrl | quote }}
+  {{- if .Values.config.listrakEnabled }}
+  LISTRAK_TEMPLATE_MESSAGE_ID: {{ required "config.listrakTemplateMessageId not defined." .Values.config.listrakTemplateMessageId | quote }}
+  LISTRAK_TRANSACTION_LIST_ID: {{ required "config.listrakTransactionListId not defined." .Values.config.listrakTransactionListId | quote }}
+  LISTRAK_MASTER_LIST_ID: {{ required "config.listrakMasterListId not defined." .Values.config.listrakMasterListId | quote }}
+  LISTRAK_TRANSACTION_FIELDS: {{ required "config.listrakTransactionFields not defined." .Values.config.listrakTransactionFields | quote }}
+  LISTRAK_CONTACT_FIELDS: {{ required "config.listrakContactFields not defined." .Values.config.listrakContactFields | quote }}
+  {{- end }}
+  KAFKA_PARTITIONS_LOYALTY: {{ required "config.kafkaPartitionsLoyalty not defined." .Values.config.kafkaPartitionsLoyalty | quote }}
+  KAFKA_PARTITION_ETL_SHIPPABLE_INVENTORY_STATUS: {{ required "config.kafkaPartitionsEtlShippableInventoryStatus not defined." .Values.config.kafkaPartitionsEtlShippableInventoryStatus | quote }}
+  KAFKA_TOPIC_CATALOG_SYNC_PRODUCTS: {{ required "config.kafkaTopicCatalogSyncProducts not defined." .Values.config.kafkaTopicCatalogSyncProducts | quote }}
+  KAFKA_TOPIC_ETL_SHIPPABLE_INVENTORY_STATUS: {{ required "config.kafkaTopicEtlShippableInventoryStatus not defined." .Values.config.kafkaTopicEtlShippableInventoryStatus | quote }}
+  KAFKA_TOPIC_ETL_SHIPPABLE_INVENTORY_STREAM: {{ required "config.kafkaTopicEtlShippableInventoryStream not defined." .Values.config.kafkaTopicEtlShippableInventoryStream | quote }}
+  KAFKA_TOPIC_IMPORT_ORDER_STATUS_ORDERS: {{ required "config.kafkaTopicImportOrderStatusOrders not defined." .Values.config.kafkaTopicImportOrderStatusOrders | quote }}
+  KAFKA_TOPIC_IMPORT_TAX_CODES_TAXCODES: {{ required "config.kafkaTopicImportTaxCodesTaxcodes not defined." .Values.config.kafkaTopicImportTaxCodesTaxcodes | quote }}
+  KAFKA_TOPIC_LOYALTY_PLUGIN_DB_UPDATES: {{ required "config.kafkaTopicLoyaltyPluginDbUpdates not defined." .Values.config.kafkaTopicLoyaltyPluginDbUpdates | quote }}
+  KAFKA_TOPIC_LOYALTY_PLUGIN_DB_UPDATES_STATUS: {{ required "config.kafkaTopicLoyaltyPluginDbUpdatesStatus not defined." .Values.config.kafkaTopicLoyaltyPluginDbUpdatesStatus | quote }}
+  KAFKA_TOPIC_PRICEBOOKS: {{ required "config.kafkaTopicPricebooks not defined." .Values.config.kafkaTopicPricebooks | quote }}
+  KAFKA_TOPIC_PRICES_BY_ID: {{ required "config.kafkaTopicPricesById not defined." .Values.config.kafkaTopicPricesById | quote }}
+  KAFKA_TOPIC_PRODUCT_IMPORT_ERRORS: {{ required "config.kafkaTopicProductImportErrors not defined." .Values.config.kafkaTopicProductImportErrors | quote }}
+  KAFKA_TOPIC_PRODUCT_IMPORT_ERRORS_PARTITIONS: {{ required "config.kafkaTopicProductImportErrorsPartitions not defined." .Values.config.kafkaTopicProductImportErrorsPartitions | quote }}
+  KAFKA_TOPIC_PRODUCT_IMPORT_PRODUCTS: {{ required "config.kafkaTopicProductImportProducts not defined." .Values.config.kafkaTopicProductImportProducts | quote }}
+  KAFKA_TOPIC_PRODUCT_IMPORT_PRODUCTS_PARTITIONS: {{ required "config.kafkaTopicProductImportProductsPartitions not defined." .Values.config.kafkaTopicProductImportProductsPartitions | quote }}
+  INVENTORY_PLUGIN_BATCH_CONSUME_SIZE: {{ required "config.inventoryPluginBatchConsumeSize is not defined." .Values.config.inventoryPluginBatchConsumeSize | quote }}
+  MOCK_TLS_TERMINATION: {{ .Values.config.mockTlsTermination | quote }}
+{{- if .Values.config.segmentAnalytics.enabled }}
+  SEGMENT_ANALYTICS_WRITE_KEY: {{ required "config.segmentAnalytics.writeKey not defined." .Values.config.segmentAnalytics.writeKey | quote }}
+  SEGMENT_USER_ID_FIELD_NAME: {{ required "config.segmentAnalytics.userIdFieldName not defined." .Values.config.segmentAnalytics.userIdFieldName | quote }}
+{{- end }}
+  SHIPPABLE_INVENTORY_CONSUMER_ENABLED: {{ required "config.shippableInventoryConsumerEnabled is not defined." .Values.config.shippableInventoryConsumerEnabled | quote }}
+  STORE_INVENTORY_CONSUMER_ENABLED: {{ required "config.storeInventoryConsumerEnabled is not defined." .Values.config.storeInventoryConsumerEnabled | quote }}
+{{- if .Values.config.sentry.enabled }}
+  SENTRY_DSN: {{ required "config.sentry.dsn not defined" .Values.config.sentry.dsn | quote }}
+  SENTRY_ENV: {{ required "config.sentry.environment not defined" .Values.config.sentry.environment | quote }}
+{{- end }}
+  SEO_METADATA_CONSUMER_ENABLED: {{ required "config.seoMetadataConsumerEnabled is not defined." .Values.config.seoMetadataConsumerEnabled | quote }}
+  LOYALTY_PLUGIN_BATCH_CONSUME_SIZE: {{ required "config.loyaltyPluginBatchConsumeSize is not defined." .Values.config.loyaltyPluginBatchConsumeSize | quote }}
+  LOYALTY_CONSUMER_ENABLED: {{ required "config.loyaltyConsumerEnabled is not defined." .Values.config.loyaltyConsumerEnabled  | quote }}
+  ORDER_EXPORT_RADIAL_URL: {{ required "config.orderExportRadialUrl is not defined." .Values.config.orderExportRadialUrl | quote }}
+  PRICING_CONSUMER_ENABLED: {{ required "config.pricingConsumerEnabled is not defined." .Values.config.pricingConsumerEnabled | quote }}
+  PRICING_GRAPHQL_URL: {{ required "config.pricingGraphqlUrl is not defined." .Values.config.pricingGraphqlUrl | quote }}
+  PRODUCT_CONSUMER_ENABLED: {{ required "config.productConsumerEnabled is not defined." .Values.config.productConsumerEnabled | quote }}
+  PRODUCT_PUBLISHER_AUTO_PUBLISH: {{ required "config.productPublisherAutoPublish is not defined." .Values.config.productPublisherAutoPublish | quote }}
+  TAXES_CONSUMER_ENABLED: {{ required "config.taxesConsumerEnabled is not defined." .Values.config.taxesConsumerEnabled  | quote }}
+  METRICS_ENABLED: {{ required "config.metricsEnabled is not defined." .Values.config.metricsEnabled  | quote }}
+  METRICS_HOST: {{ required "config.metricsHost is not defined." .Values.config.metricsHost  | quote }}
+  METRICS_PATH: {{ required "config.metricsPath is not defined." .Values.config.metricsPath  | quote }}
+  METRICS_PORT: {{ required "config.metricsPort is not defined." .Values.config.metricsPort  | quote }}
+  CONSTANT_PUBLISHER_MODE: {{ .Values.config.constantPublisherMode | quote }}
+  CONSTANT_PUBLISHER_PAUSE_SECONDS: {{ .Values.config.constantPublisherPauseSeconds | quote }}
+  RADIAL_API_URL: {{ required "config.radialApiUrl not defined." .Values.config.radialApiUrl | quote }}
+  RADIAL_STORE_ID: {{ required "config.radialStoreId not defined." .Values.config.radialStoreId | quote }}
+  RADIAL_MODE: {{ required "config.radialMode not defined." .Values.config.radialMode | quote }}
+  RADIAL_TAXES_API_URL: {{ required "config.radialTaxesApiUrl not defined." .Values.config.radialTaxesApiUrl | quote }}
+  KAFKA_TOPIC_RADIAL_ITEM_EXPORT_STATUS: {{ required "config.kafkaTopicRadialItemExportStatus not defined." .Values.config.kafkaTopicRadialItemExportStatus | quote }}
+  RADIAL_ITEM_EXPORT_CONSUMER_ENABLED: {{ required "config.radialItemExportConsumerEnabled not defined." .Values.config.radialItemExportConsumerEnabled | quote }}
+  # TODO: Make Radial ROM configs required with first production release
+  RADIAL_ROM_STORE_ID: {{ .Values.config.radialRomStoreId | quote }}
+  ROM_ORDER_PREFIX: {{ .Values.config.radialRomOrderPrefix }}
+  ROM_CUSTOMER_ID_PREFIX: {{ .Values.config.radialRomCustomerIdPrefix }}
+  IMPORT_ORDER_STATUS_CONSUMER_ENABLED: {{ required "config.importOrderStatusConsumerEnabled not defined." .Values.config.importOrderStatusConsumerEnabled | quote }}
+  PRODUCT_IMPORT_DEFAULT_INVISIBLE: {{ required "config.productImportDefaultInvisible not defined." .Values.config.productImportDefaultInvisible | quote }}
+  ALLOW_RESET_CODES_MUTATION: {{ required "config.allowResetCodesMutation not defined." .Values.config.allowResetCodesMutation | quote }}
+  KAFKA_TOPIC_SURCHARGES: {{ required "config.kafkaTopicSurcharges not defined." .Values.config.kafkaTopicSurcharges | quote }}
+  SURCHARGE_CONSUMER_ENABLED: {{ required "config.surchargeConsumerEnabled not defined." .Values.config.surchargeConsumerEnabled | quote }}
+  CART_EXPIRY_SECONDS: {{ .Values.config.cartExpirySeconds | quote }}
+  NODE_ENV: {{ .Values.config.nodeEnv | quote }}
+  REACTION_ADMIN_PUBLIC_ACCOUNT_REGISTRATION_URL: {{ required "config.reactionAdminPublicAccountRegistrationUrl not defined." .Values.config.reactionAdminPublicAccountRegistrationUrl | quote }}
+  REACTION_IDENTITY_PUBLIC_PASSWORD_RESET_URL: {{ required "config.reactionIdentityPublicPasswordResetUrl not defined." .Values.config.reactionIdentityPublicPasswordResetUrl | quote }}
+  REACTION_IDENTITY_PUBLIC_VERIFY_EMAIL_URL: {{ required "config.reactionIdentityPublicVerifyEmailUrl not defined." .Values.config.reactionIdentityPublicVerifyEmailUrl | quote }}
+  STORE_URL: {{ required "config.storeUrl not defined." .Values.config.storeUrl | quote }}
