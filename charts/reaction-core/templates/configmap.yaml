@@ -90,8 +90,8 @@ data:
   RADIAL_ITEM_EXPORT_CONSUMER_ENABLED: {{ required "config.radialItemExportConsumerEnabled not defined." .Values.config.radialItemExportConsumerEnabled | quote }}
   # TODO: Make Radial ROM configs required with first production release
   RADIAL_ROM_STORE_ID: {{ .Values.config.radialRomStoreId | quote }}
-  ROM_ORDER_PREFIX: {{ .Values.config.radialRomOrderPrefix }}
-  ROM_CUSTOMER_ID_PREFIX: {{ .Values.config.radialRomCustomerIdPrefix }}
+  ROM_ORDER_PREFIX: {{ .Values.config.radialRomOrderPrefix | quote }}
+  ROM_CUSTOMER_ID_PREFIX: {{ .Values.config.radialRomCustomerIdPrefix | quote }}
   IMPORT_ORDER_STATUS_CONSUMER_ENABLED: {{ required "config.importOrderStatusConsumerEnabled not defined." .Values.config.importOrderStatusConsumerEnabled | quote }}
   PRODUCT_IMPORT_DEFAULT_INVISIBLE: {{ required "config.productImportDefaultInvisible not defined." .Values.config.productImportDefaultInvisible | quote }}
   ALLOW_RESET_CODES_MUTATION: {{ required "config.allowResetCodesMutation not defined." .Values.config.allowResetCodesMutation | quote }}
@@ -112,11 +112,11 @@ data:
   LISTRAK_CLIENT_ID: {{ .Values.config.listrakClientId }}
   LISTRAK_CLIENT_SECRET: {{ .Values.config.listrakClientSecret }}
 {{- end }}
-  ORDER_EXPORT_RADIAL_API_KEY: {{ required "config.orderExportRadialApiKey not defined." .Values.config.orderExportRadialApiKey }}
+  ORDER_EXPORT_RADIAL_API_KEY: {{ required "config.orderExportRadialApiKey not defined." .Values.config.orderExportRadialApiKey | quote }}
   # TODO: Make Radial ROM configs required with first production release
-  ROM_ORDER_CREATE_API_KEY: {{ .Values.config.radialRomOrderCreateApiKey }}
-  RADIAL_API_KEY: {{ required "config.radialApiKey not defined." .Values.config.radialApiKey }}
-  RADIAL_PASSWORD: {{ required "config.radialPassword not defined." .Values.config.radialPassword }}
-  RADIAL_PAYMENT_API_KEY: {{ required "config.radialPaymentApiKey not defined." .Values.config.radialPaymentApiKey }}
-  RADIAL_TAXES_API_KEY: {{ required "config.radialTaxesApiKey not defined." .Values.config.radialTaxesApiKey }}
-  RADIAL_USERNAME: {{ required "config.radialUsername not defined." .Values.config.radialUsername }}
+  ROM_ORDER_CREATE_API_KEY: {{ .Values.config.radialRomOrderCreateApiKey | quote }}
+  RADIAL_API_KEY: {{ required "config.radialApiKey not defined." .Values.config.radialApiKey | quote }}
+  RADIAL_PASSWORD: {{ required "config.radialPassword not defined." .Values.config.radialPassword | quote }}
+  RADIAL_PAYMENT_API_KEY: {{ required "config.radialPaymentApiKey not defined." .Values.config.radialPaymentApiKey | quote }}
+  RADIAL_TAXES_API_KEY: {{ required "config.radialTaxesApiKey not defined." .Values.config.radialTaxesApiKey | quote }}
+  RADIAL_USERNAME: {{ required "config.radialUsername not defined." .Values.config.radialUsername | quote }}
